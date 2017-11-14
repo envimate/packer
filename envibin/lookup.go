@@ -18,13 +18,12 @@ func Lookup(repo, base, tag string) (string, error) {
 		return "", fmt.Errorf("could not read envibin configuration: %v", err)
 	}
 
+	// request to envibin
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", fmt.Errorf("unable to create envibin request: %v", err)
 	}
 	req.SetBasicAuth(username, password)
-
-	return "", fmt.Errorf(req.URL.String(), req.Header)
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
@@ -34,6 +33,7 @@ func Lookup(repo, base, tag string) (string, error) {
 		return "", fmt.Errorf("envibin responded with %v, aborting", resp.StatusCode)
 	}
 
+	// read response
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", fmt.Errorf("unexpected response from envibin: %v", err)

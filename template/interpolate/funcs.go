@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/packer/common/uuid"
+	"github.com/hashicorp/packer/envibin"
 )
 
 // InitTime is the UTC time when this package was initialized. It is
@@ -27,6 +28,7 @@ var FuncGens = map[string]FuncGenerator{
 	"build_name":   funcGenBuildName,
 	"build_type":   funcGenBuildType,
 	"env":          funcGenEnv,
+	"envibin":		funcGenEnvibin,
 	"isotime":      funcGenIsotime,
 	"pwd":          funcGenPwd,
 	"template_dir": funcGenTemplateDir,
@@ -87,6 +89,25 @@ func funcGenEnv(ctx *Context) interface{} {
 		}
 
 		return os.Getenv(k), nil
+	}
+}
+
+func funcGenEnvibin(ctx *Context) interface{} {
+	return func(args ...string) (string, error) {
+		if len(args) != 3 {
+			return "", fmt.Errorf("unallowed number of arguments, 3 arguments required: %v", args)
+		}
+
+		repo := args[0]
+		image := args[1]
+		tag := args[2]
+
+		url, err := envibin.Lookup(repo, image, tag)
+		if err != nil {
+			return "", err
+		}
+
+		return url, nil
 	}
 }
 

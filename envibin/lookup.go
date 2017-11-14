@@ -7,16 +7,13 @@ import (
 	"io/ioutil"
 )
 
-const (
-	EnvibinBaseURL = "https://envimate.com/"
-)
-
 func Lookup(repo, base, tag string) (string, error) {
-	url := fmt.Sprintf("%s%s/artifacts/%s/presigned/%s", EnvibinBaseURL, repo, base, tag)
-	username, password, err := fromConfig("envibin-"+repo)
+	// get envibin config
+	baseURL, username, password, err := fromConfig("envibin-"+repo)
 	if err != nil {
 		return "", fmt.Errorf("could not read envibin configuration: %v", err)
 	}
+	url := fmt.Sprintf("%s%s/artifacts/%s/presigned/%s", baseURL, repo, base, tag)
 
 	// request to envibin
 	req, err := http.NewRequest("GET", url, nil)
@@ -42,7 +39,7 @@ func Lookup(repo, base, tag string) (string, error) {
 	return string(body), nil
 }
 
-func fromConfig(filename string) (username, password string, err error) {
+func fromConfig(filename string) (baseURL, username, password string, err error) {
 	v := viper.New()
 	v.SetEnvPrefix("envi")
 	v.AutomaticEnv()
@@ -55,6 +52,7 @@ func fromConfig(filename string) (username, password string, err error) {
 		return
 	}
 
+	baseURL = v.GetString("url")
 	username = v.GetString("username")
 	password = v.GetString("password")
 	return

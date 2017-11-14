@@ -1,0 +1,4 @@
+url: https://envimate.com/
+username: someUsername
+password: somePassword
+# Supports environment variables by using upper-case and ENVI_ prefix. i.e. ENVI_USERNAME=someUsername

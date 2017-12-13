@@ -13,7 +13,7 @@ func Lookup(repo, base, tag string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("could not read envibin configuration: %v", err)
 	}
-	url := fmt.Sprintf("%s%s/artifacts/%s/presigned/%s", baseURL, repo, base, tag)
+	url := fmt.Sprintf("%s/%s/presigned/%s", baseURL, base, tag)
 
 	// request to envibin
 	req, err := http.NewRequest("GET", url, nil)

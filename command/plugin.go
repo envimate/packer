@@ -52,6 +52,7 @@ import (
 	dockerpushpostprocessor "github.com/hashicorp/packer/post-processor/docker-push"
 	dockersavepostprocessor "github.com/hashicorp/packer/post-processor/docker-save"
 	dockertagpostprocessor "github.com/hashicorp/packer/post-processor/docker-tag"
+	envibinput "github.com/hashicorp/packer/post-processor/envibin-put"
 	googlecomputeexportpostprocessor "github.com/hashicorp/packer/post-processor/googlecompute-export"
 	manifestpostprocessor "github.com/hashicorp/packer/post-processor/manifest"
 	shelllocalpostprocessor "github.com/hashicorp/packer/post-processor/shell-local"
@@ -139,6 +140,7 @@ var PostProcessors = map[string]packer.PostProcessor{
 	"docker-push":          new(dockerpushpostprocessor.PostProcessor),
 	"docker-save":          new(dockersavepostprocessor.PostProcessor),
 	"docker-tag":           new(dockertagpostprocessor.PostProcessor),
+	"envibin-put":          new(envibinput.PostProcessor),
 	"googlecompute-export": new(googlecomputeexportpostprocessor.PostProcessor),
 	"manifest":             new(manifestpostprocessor.PostProcessor),
 	"shell-local":          new(shelllocalpostprocessor.PostProcessor),

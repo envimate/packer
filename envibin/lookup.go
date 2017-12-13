@@ -2,14 +2,16 @@ package envibin
 
 import (
 	"fmt"
-	"net/http"
-	"github.com/spf13/viper"
 	"io/ioutil"
+	"net/http"
+
+	"github.com/spf13/viper"
 )
 
+// Lookup lookup
 func Lookup(repo, base, tag string) (string, error) {
 	// get envibin config
-	baseURL, username, password, err := fromConfig("envibin-"+repo)
+	baseURL, username, password, err := fromConfig("envibin-" + repo)
 	if err != nil {
 		return "", fmt.Errorf("could not read envibin configuration: %v", err)
 	}
@@ -26,6 +28,7 @@ func Lookup(repo, base, tag string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error when sending request to envibin: %v", err)
 	}
+
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("envibin responded with %v, aborting", resp.StatusCode)
 	}

@@ -18,6 +18,12 @@
 			"versionExact": "v10.0.3-beta"
 		},
 		{
+			"checksumSHA1": "Kr6/gY3LrNiOxMfDBCfBvBvenYw=",
+			"path": "github.com/Azure/azure-sdk-for-go/arm/disk",
+			"revision": "26132835cbefa2669a306b777f34b929b56aa0a2",
+			"revisionTime": "2017-05-18T20:34:07Z"
+		},
+		{
 			"checksumSHA1": "HMu0WrEHVs+wqyjsTzXxRsEJimI=",
 			"comment": "v3.1.0-beta",
 			"path": "github.com/Azure/azure-sdk-for-go/arm/network",
@@ -566,34 +572,34 @@
 			"revision": "6d212800a42e8ab5c146b8ace3490ee17e5225f9"
 		},
 		{
-			"checksumSHA1": "b2m7aICkBOz9JqmnX2kdDN4wgjI=",
+			"checksumSHA1": "2+1TPdvFj4W1QS5drkFr+ibM3G0=",
 			"path": "github.com/denverdino/aliyungo/common",
-			"revision": "b8a81c0f54003ea306ef566807919955d639cd48",
-			"revisionTime": "2017-08-02T08:24:47Z"
+			"revision": "ec0e57291175fc9b06c62977f384756642285aab",
+			"revisionTime": "2017-11-27T16:20:29Z"
 		},
 		{
-			"checksumSHA1": "5UYxIc/DZ5g0SM7qwXskoyNOc78=",
+			"checksumSHA1": "y4Ay4E5HqT25sweC/Bl9/odNWaI=",
 			"path": "github.com/denverdino/aliyungo/ecs",
-			"revision": "b8a81c0f54003ea306ef566807919955d639cd48",
-			"revisionTime": "2017-08-02T08:24:47Z"
+			"revision": "ec0e57291175fc9b06c62977f384756642285aab",
+			"revisionTime": "2017-11-27T16:20:29Z"
 		},
 		{
-			"checksumSHA1": "VfIjW9Tf2eLmHrgrvk1wRnBaxTE=",
+			"checksumSHA1": "sievsBvgtVF2iZ2FjmDZppH3+Ro=",
 			"path": "github.com/denverdino/aliyungo/ram",
-			"revision": "b8a81c0f54003ea306ef566807919955d639cd48",
-			"revisionTime": "2017-08-02T08:24:47Z"
+			"revision": "ec0e57291175fc9b06c62977f384756642285aab",
+			"revisionTime": "2017-11-27T16:20:29Z"
 		},
 		{
 			"checksumSHA1": "pQHH9wpyS0e4wpW0erxe3D7OILM=",
 			"path": "github.com/denverdino/aliyungo/slb",
-			"revision": "b8a81c0f54003ea306ef566807919955d639cd48",
-			"revisionTime": "2017-08-02T08:24:47Z"
+			"revision": "ec0e57291175fc9b06c62977f384756642285aab",
+			"revisionTime": "2017-11-27T16:20:29Z"
 		},
 		{
-			"checksumSHA1": "piZlmhWPLGxYkXLysTrjcXllO4c=",
+			"checksumSHA1": "cKVBRn7GKT+0IqfGUc/NnKDWzCw=",
 			"path": "github.com/denverdino/aliyungo/util",
-			"revision": "b8a81c0f54003ea306ef566807919955d639cd48",
-			"revisionTime": "2017-08-02T08:24:47Z"
+			"revision": "ec0e57291175fc9b06c62977f384756642285aab",
+			"revisionTime": "2017-11-27T16:20:29Z"
 		},
 		{
 			"checksumSHA1": "D37uI+U+FYvTJIdG2TTozXe7i7U=",
@@ -1057,10 +1063,11 @@
 			"revisionTime": "2017-03-21T23:07:31Z"
 		},
 		{
-			"checksumSHA1": "Q2V7Zs3diLmLfmfbiuLpSxETSuY=",
+			"checksumSHA1": "iydUphwYqZRq3WhstEdGsbvBAKs=",
 			"comment": "v1.1.4-4-g976c720",
 			"path": "github.com/stretchr/testify/assert",
-			"revision": "976c720a22c8eb4eb6a0b4348ad85ad12491a506"
+			"revision": "d77da356e56a7428ad25149ca77381849a6a5232",
+			"revisionTime": "2016-06-15T09:26:46Z"
 		},
 		{
 			"checksumSHA1": "GQ9bu6PuydK3Yor1JgtVKUfEJm8=",

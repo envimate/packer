@@ -32,10 +32,6 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 }
 
 func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, error) {
-	for _, file := range artifact.Files() {
-		ui.Message(file)
-	}
-
 	if p.config.Url == "" {
 		p.config.Url = "http://localhost:9000"
 		ui.Message("no repository url configured, using default " + p.config.Url)
@@ -51,10 +47,20 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		return nil, false, err
 	}
 
-	err = c.Push(artifactKey, "", p.config.Tags, p.config.Labels)
+	err = c.Push(artifactKey, compressed(artifact.Files()), p.config.Tags, p.config.Labels)
 	if err != nil {
 		return nil, false, err
 	}
 
+	ui.Message("put artifact with key " + p.config.ArtifactKey)
+
 	return nil, false, nil
+}
+
+func compressed(files []string) string {
+	if len(files) > 0 {
+		return files[0]
+	}
+
+	return ""
 }

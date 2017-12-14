@@ -3,6 +3,8 @@ package envibinPut
 import (
 	"fmt"
 
+	"errors"
+
 	"bitbucket.org/envimate/envibin-cli/client"
 	"bitbucket.org/envimate/envibin-cli/domain"
 	"github.com/hashicorp/packer/helper/config"
@@ -47,7 +49,12 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		return nil, false, err
 	}
 
-	err = c.Push(artifactKey, compressed(artifact.Files()), p.config.Tags, p.config.Labels)
+	compressedFile, err := compressed(artifact.Files())
+	if err != nil {
+		return nil, false, err
+	}
+
+	err = c.Push(artifactKey, compressedFile, p.config.Tags, p.config.Labels)
 	if err != nil {
 		return nil, false, err
 	}
@@ -57,10 +64,15 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 	return nil, false, nil
 }
 
-func compressed(files []string) string {
+func compressed(files []string) (string, error) {
+	if len(files) == 0 {
+		return "", errors.New("no files to upload")
+	}
 	if len(files) > 0 {
-		return files[0]
+		return files[0], nil
+	} else {
+		return "", errors.New("not yet supported - artifact contains more then one file")
 	}
 
-	return ""
+	return "", nil
 }

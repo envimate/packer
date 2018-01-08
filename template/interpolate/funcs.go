@@ -96,19 +96,33 @@ func funcGenEnv(ctx *Context) interface{} {
 func funcGenEnvibin(ctx *Context) interface{} {
 	return func(args ...string) (string, error) {
 		if len(args) != 3 {
-			return "", fmt.Errorf("unallowed number of arguments, 3 arguments required: %v", args)
 		}
 
-		repo := args[0]
-		image := args[1]
-		tag := args[2]
+		if len(args) == 3 {
+			repo := args[0]
+			image := args[1]
+			tag := args[2]
 
-		url, err := envibin.Lookup(repo, image, tag)
-		if err != nil {
-			return "", err
+			url, err := envibin.Lookup(repo, image, tag)
+			if err != nil {
+				return "", err
+			}
+
+			return url, nil
+		} else if len(args) == 2 {
+			repo := ""
+			image := args[1]
+			tag := args[2]
+
+			url, err := envibin.Lookup(repo, image, tag)
+			if err != nil {
+				return "", err
+			}
+
+			return url, nil
+		} else {
+			return "", fmt.Errorf("unallowed number of arguments, 2 or 3 arguments required: %v", args)
 		}
-
-		return url, nil
 	}
 }
 

@@ -5,13 +5,13 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/spf13/viper"
+	"bitbucket.org/envimate/config"
 )
 
 // Lookup lookup
 func Lookup(repo, base, tag string) (string, error) {
 	// get envibin config
-	baseURL, username, password, err := fromConfig("envibin-" + repo)
+	baseURL, username, password, err := fromConfig(repo)
 	if err != nil {
 		return "", fmt.Errorf("could not read envibin configuration: %v", err)
 	}
@@ -42,21 +42,14 @@ func Lookup(repo, base, tag string) (string, error) {
 	return string(body), nil
 }
 
-func fromConfig(filename string) (baseURL, username, password string, err error) {
-	v := viper.New()
-	v.SetEnvPrefix("envi")
-	v.AutomaticEnv()
-	v.SetConfigName(filename) // name of config file (without extension)
-	v.AddConfigPath("/etc/envibin/")
-	v.AddConfigPath("$HOME/.envibin")
-	v.AddConfigPath(".")
-	err = v.ReadInConfig()
+func fromConfig(prefix string) (baseURL, username, password string, err error) {
+	cfg, err := config.Get(prefix)
 	if err != nil {
-		return
+		return "", "", "", err
 	}
 
-	baseURL = v.GetString("url")
-	username = v.GetString("username")
-	password = v.GetString("password")
+	baseURL = cfg.Repo.URL
+	username = cfg.Repo.Username
+	password = cfg.Repo.Password
 	return
 }

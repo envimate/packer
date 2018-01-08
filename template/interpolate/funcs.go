@@ -95,9 +95,6 @@ func funcGenEnv(ctx *Context) interface{} {
 
 func funcGenEnvibin(ctx *Context) interface{} {
 	return func(args ...string) (string, error) {
-		if len(args) != 3 {
-		}
-
 		if len(args) == 3 {
 			repo := args[0]
 			image := args[1]
@@ -111,8 +108,8 @@ func funcGenEnvibin(ctx *Context) interface{} {
 			return url, nil
 		} else if len(args) == 2 {
 			repo := ""
-			image := args[1]
-			tag := args[2]
+			image := args[0]
+			tag := args[1]
 
 			url, err := envibin.Lookup(repo, image, tag)
 			if err != nil {

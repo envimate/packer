@@ -5,8 +5,8 @@ import (
 
 	"errors"
 
-	"bitbucket.org/envimate/envibin-cli/client"
 	"bitbucket.org/envimate/envibin-cli/domain"
+	"bitbucket.org/envimate/envibin-go-client"
 	"github.com/hashicorp/packer/helper/config"
 	"github.com/hashicorp/packer/packer"
 )

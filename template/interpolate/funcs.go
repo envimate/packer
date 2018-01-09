@@ -100,6 +100,18 @@ func funcGenEnvibin(ctx *Context) interface{} {
 			image := args[1]
 			tag := args[2]
 
+			if ctx != nil && ctx.UserVariables != nil {
+				if ctx.UserVariables[repo] != "" {
+					repo = ctx.UserVariables[repo]
+				}
+				if ctx.UserVariables[image] != "" {
+					image = ctx.UserVariables[image]
+				}
+				if ctx.UserVariables[tag] != "" {
+					tag = ctx.UserVariables[tag]
+				}
+			}
+
 			url, err := envibin.Lookup(repo, image, tag)
 			if err != nil {
 				return "", err
@@ -110,6 +122,15 @@ func funcGenEnvibin(ctx *Context) interface{} {
 			repo := ""
 			image := args[0]
 			tag := args[1]
+
+			if ctx != nil && ctx.UserVariables != nil {
+				if ctx.UserVariables[image] != "" {
+					image = ctx.UserVariables[image]
+				}
+				if ctx.UserVariables[tag] != "" {
+					tag = ctx.UserVariables[tag]
+				}
+			}
 
 			url, err := envibin.Lookup(repo, image, tag)
 			if err != nil {

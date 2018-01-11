@@ -29,7 +29,7 @@ var FuncGens = map[string]FuncGenerator{
 	"build_name":     funcGenBuildName,
 	"build_type":     funcGenBuildType,
 	"env":            funcGenEnv,
-	"envibin":        funcGenEnvibin,
+	"envibin_url":    funcGenEnvibinURL,
 	"isotime":        funcGenIsotime,
 	"pwd":            funcGenPwd,
 	"template_dir":   funcGenTemplateDir,
@@ -93,7 +93,7 @@ func funcGenEnv(ctx *Context) interface{} {
 	}
 }
 
-func funcGenEnvibin(ctx *Context) interface{} {
+func funcGenEnvibinURL(ctx *Context) interface{} {
 	return func(args ...string) (string, error) {
 		if len(args) == 3 {
 			repo := args[0]

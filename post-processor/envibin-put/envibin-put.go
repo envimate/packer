@@ -5,19 +5,20 @@ import (
 
 	"errors"
 
+	envibinConfig "bitbucket.org/envimate/config"
 	"bitbucket.org/envimate/envibin-cli/domain"
 	"bitbucket.org/envimate/envibin-go-client"
 	"github.com/hashicorp/packer/helper/config"
 	"github.com/hashicorp/packer/packer"
 )
 
+var cfg *envibinConfig.Config
+
 type Config struct {
-	Url         string   `mapstructure:"url"`
-	Username    string   `mapstructure:"username"`
-	Password    string   `mapstructure:"password"`
-	ArtifactKey string   `mapstructure:"artifact-key"`
-	Tags        []string `mapstructure:"tags"`
-	Labels      []string `mapstructure:"labels"`
+	ConfigPrefix string   `mapstructure:"config-prefix"`
+	ArtifactKey  string   `mapstructure:"artifact-key"`
+	Tags         []string `mapstructure:"tags"`
+	Labels       []string `mapstructure:"labels"`
 }
 
 type PostProcessor struct {
@@ -34,9 +35,9 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 }
 
 func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, error) {
-	if p.config.Url == "" {
-		p.config.Url = "http://localhost:9000"
-		ui.Message("no repository url configured, using default " + p.config.Url)
+	err := resolveEnvibinConfig(p.config.ConfigPrefix)
+	if err != nil {
+		return nil, false, err
 	}
 
 	var artifactKey = domain.NewArtifactKey(p.config.ArtifactKey)
@@ -44,7 +45,7 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		return nil, false, fmt.Errorf("invalid artifact-key %s", artifactKey.String())
 	}
 
-	c, err := client.New(p.config.Url)
+	c, err := client.New(cfg.Repo.URL)
 	if err != nil {
 		return nil, false, err
 	}
@@ -54,6 +55,7 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		return nil, false, err
 	}
 
+	_ = c.Remove(artifactKey)
 	err = c.Push(artifactKey, compressedFile, p.config.Tags, p.config.Labels)
 	if err != nil {
 		return nil, false, err
@@ -62,6 +64,24 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 	ui.Message("put artifact with key " + p.config.ArtifactKey)
 
 	return nil, false, nil
+}
+
+func resolveEnvibinConfig(prefix string) error {
+	if prefix == "" {
+		err := envibinConfig.Init()
+		if err != nil {
+			return fmt.Errorf("Could not read envibin default configuration: %s", err)
+		}
+		cfg = envibinConfig.Default
+	} else {
+		c, err := envibinConfig.Get(prefix)
+		if err != nil {
+			return fmt.Errorf("Could not read envibin configuration for %s: %s", prefix, err)
+		}
+		cfg = c
+	}
+
+	return nil
 }
 
 func compressed(files []string) (string, error) {

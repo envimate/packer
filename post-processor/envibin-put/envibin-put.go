@@ -15,10 +15,11 @@ import (
 var cfg *envibinConfig.Config
 
 type Config struct {
-	ConfigPrefix string   `mapstructure:"config-prefix"`
-	ArtifactKey  string   `mapstructure:"artifact-key"`
-	Tags         []string `mapstructure:"tags"`
-	Labels       []string `mapstructure:"labels"`
+	Repository string   `mapstructure:"repository"`
+	Artifact   string   `mapstructure:"artifact"`
+	Version    string   `mapstructure:"version"`
+	Tags       []string `mapstructure:"tags"`
+	Labels     []string `mapstructure:"labels"`
 }
 
 type PostProcessor struct {
@@ -31,16 +32,19 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 		return err
 	}
 
-	return nil
+	if p.config.Artifact == "" {
+		return errors.New("envibin-put: artifact cannot be empty")
+	}
+	if p.config.Version == "" {
+		return errors.New("envibin-put: version cannot be empty")
+	}
+
+	err = resolveEnvibinConfig(p.config.Repository)
+	return err
 }
 
 func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, error) {
-	err := resolveEnvibinConfig(p.config.ConfigPrefix)
-	if err != nil {
-		return nil, false, err
-	}
-
-	var artifactKey = domain.NewArtifactKey(p.config.ArtifactKey)
+	var artifactKey = domain.NewArtifactKey(fmt.Sprintf("%s:%s", p.config.Artifact, p.config.Version))
 	if artifactKey.IsInvalid() {
 		return nil, false, fmt.Errorf("invalid artifact-key %s", artifactKey.String())
 	}
@@ -61,7 +65,7 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		return nil, false, err
 	}
 
-	ui.Message("put artifact with key " + p.config.ArtifactKey)
+	ui.Message("put artifact with key " + fmt.Sprintf("%s:%s", p.config.Artifact, p.config.Version))
 
 	return nil, false, nil
 }
